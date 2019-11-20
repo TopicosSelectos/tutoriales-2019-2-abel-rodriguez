@@ -49,3 +49,37 @@ all_star_wars_matrix
 
 total_revenue_vector <- colSums(all_star_wars_matrix)
 total_revenue_vector
+
+all_star_wars_matrix[1,1]
+all_star_wars_matrix[1:3,1:3]
+all_star_wars_matrix[1:3,1:2]
+all_star_wars_matrix[1:2,1:2]
+all_star_wars_matrix[1:2,1:3]
+
+all_non_us <- all_star_wars_matrix[,2]
+mean(all_non_us)
+
+all_non_us_first_two_movies <- all_star_wars_matrix[1:2, 2]
+all_non_us_first_two_movies
+
+mean(all_non_us_first_two_movies)
+
+## 4.10
+my_matrix
+2 * my_matrix
+my_matrix * my_matrix
+
+matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE) %*%
+  matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+
+all_box_office_matrix <- all_star_wars_matrix[,1:2]
+all_movie_prices <- matrix(c(4.1, 2.1, 4.2, 2.2, 4.3, 2.3, 4.4, 2.4, 4.5, 2.5, 4.6, 2.6), ncol = 2, byrow = TRUE)
+all_movie_prices
+
+visitors_matrix <- all_box_office_matrix / all_movie_prices
+visitors_matrix
+
+us_visitors <- visitors_matrix[, 1]
+us_visitors
+
+mean(us_visitors)
