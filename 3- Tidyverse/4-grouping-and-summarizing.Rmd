@@ -1,0 +1,73 @@
+---
+title: "Grouping and summarizing"
+output: html_document,
+author: "Abel Rodríguez"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 4.0.1 Summarizing the median life expectancy
+
+```{R}
+  gapminder %>% summarize(medianLifeExp = median(lifeExp))
+```
+
+## 4.0.2 Summarizing the median life expectancy in 1957
+```{R}
+  gapminder %>% filter(year == 1957) %>% 
+    summarize(medianLifeExp = median(lifeExp))
+```
+
+## 4.0.3 Summarizing multiple variables in 1957 
+```{R}
+  gapminder %>% filter(year == 1957) %>% 
+    summarize(
+      medianLifeExp = median(lifeExp),
+      maxGdpPercap = max(gdpPercap)
+    )
+```
+
+## 4.0.4 Summarizing by year
+```{R}
+  gapminder %>% group_by(year) %>% 
+    summarize(medianLifeExp = median(lifeExp), maxGdpPercap = max(gdpPercap))
+```
+
+## 4.0.5 Summarizing by continent
+```{R}
+  gapminder %>% filter(year == 1957) %>%
+    group_by(continent) %>%
+    summarize(medianLifeExp = median(lifeExp), maxGdpPercap = max(gdpPercap))
+
+```
+
+## 4.0.6
+```{R}
+  gapminder %>% 
+    group_by(continent, year) %>%
+    summarize(medianLifeExp = median(lifeExp), maxGdpPercap = max(gdpPercap))
+```
+
+## 4.0.7 Visualizing median life expectancy over time
+```{R}
+ by_year <- gapminder %>% group_by(year) %>% summarize(medianLifeExp = median(lifeExp))
+  ggplot(by_year, aes(x = year, y = medianLifeExp)) + geom_point() + expand_limits(y = 0)
+```
+
+## 4.0.8 Visualizing median GPD per capita per continent over time
+```{R}
+by_year_continent <- gapminder %>% group_by(continent, year) %>% summarize(medianGDP = median(gdpPercap))
+
+ggplot(by_year_continent, aes(x = year, y = medianGDP, color = continent)) + geom_point() + expand_limits(y = 0)
+```
+
+## 4.0.9 Comparing median life expectancy and median GDP per continent in 2007
+
+```{R}
+  by_continent_2007 <- gapminder %>% group_by(continent, year) %>% filter(year == 2007) %>% summarize(medianLifeExp = median(lifeExp), medianGdpPercap = median(gdpPercap))
+
+  ggplot(by_continent_2007, aes(x = medianGdpPercap, y = medianLifeExp, color = continent)) + geom_point()
+  
+```
