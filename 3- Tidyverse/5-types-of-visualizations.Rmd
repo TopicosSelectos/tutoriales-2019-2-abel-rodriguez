@@ -1,0 +1,76 @@
+---
+title: "Types of visualizations"
+output: html_document
+author: "Abel Rodríguez"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+```
+
+## 5.0.1 Visualizing median GDP per capita over time
+
+```{r}
+  by_year <- gapminder %>% group_by(year) %>% summarise(medianGdpPercap = median(gdpPercap))
+
+  ggplot(by_year, aes(x = year, y = medianGdpPercap)) + geom_line() + expand_limits(y = 0)
+
+```
+
+## 5.0.2 Visualizing median GDP per capita by continent over time
+```{r}
+  by_year_continent <- gapminder %>% group_by(continent, year) %>% summarise(medianGdpPercap = median(gdpPercap))
+
+  ggplot(by_year_continent, aes(x = year, y = medianGdpPercap, color = continent)) + geom_line() + expand_limits(y = 0)
+```
+
+## 5.0.3 Visualizing median GDP per capita by continent
+```{R}
+
+    by_continent <- gapminder %>%
+      group_by(continent, year) %>%
+      filter(year == 1952) %>%
+      summarise(medianGdpPercap = median(gdpPercap))
+
+    ggplot(by_continent, aes(x = continent, y = medianGdpPercap)) + geom_col() + expand_limits(y = 0)
+
+```
+
+## 5.0.4 Visualizing GDP per capita by country in Oceania
+```{R}
+
+    by_continent <- gapminder %>%
+      group_by(country, continent, year) %>%
+      filter(year == 1952, continent == "Oceania") %>%
+      summarise(medianGdpPercap = median(gdpPercap))
+
+    ggplot(by_continent, aes(x = country, y = medianGdpPercap)) + geom_col() + expand_limits(y = 0)
+
+```
+
+## 5.0.5 Visualizing population
+
+```{R}
+  gapminder_1952 <- gapminder %>% filter(year == 1952)
+
+  ggplot(gapminder_1952, aes(x = pop)) + geom_histogram()
+```
+
+## 5.0.6 Visualizing population with x-axis on a log scale
+```{R}
+  gapminder_1952 <- gapminder %>% filter(year == 1952)
+  
+  ggplot(gapminder_1952, aes(x = pop)) + geom_histogram() + scale_x_log10()
+
+```
+
+## 5.0.7 Comparing GDP per capita across continents
+```{R}
+  gapminder_1952 <- gapminder %>% filter(year == 1952)
+
+  ggplot(gapminder_1952, aes(x = continent, y = gdpPercap)) + geom_boxplot() + scale_y_log10() + ggtitle("Comparing GDP per capita across continents")
+  
+
+```
